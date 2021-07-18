@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class LottoMain {
@@ -29,7 +26,7 @@ public class LottoMain {
             }
 
             ArrayList<Integer> lotto = new ArrayList<>(lottoNumber);
-
+            Collections.sort(lotto);
             lottos.add(new Lotto(lotto));
         }
 
@@ -50,13 +47,21 @@ public class LottoMain {
 
 
         for (Lotto lotto : lottos) {
+            int temp = 0;
             List<Integer> numbers = lotto.numbers;
             for (Integer number : numbers) {
                 if (winningNumber.contains(number)) {
-                    // 갯수 카운트해서 몇개 맞추면 어떻게 할지! -> 당첨 & 수익률!
+                    temp++;
                 }
             }
+            checkWinning(temp);
         }
 
+    }
+
+    public static void checkWinning(int winningCount) {
+        if (winningCount > 3) {
+            System.out.println("당첨!");
+        }else System.out.println("꽝!");
     }
 }

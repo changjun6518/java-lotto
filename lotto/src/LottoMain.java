@@ -49,7 +49,13 @@ public class LottoMain {
             winningNumber.add(sc.nextInt());
         }
         System.out.println("보너스 볼을 입력해 주세요!");
-        winningNumber.add(sc.nextInt());
+        int bonusNum = sc.nextInt();
+    }
+
+    public static boolean inputBonousNumber(int bonusNum, Lotto lotto) {
+        if (lotto.numbers.contains(bonusNum)) {
+            return true;
+        } else return false;
     }
 
     public static void checkWinning() {
@@ -61,6 +67,7 @@ public class LottoMain {
                     winningCount++;
                 }
             }
+
             printWinningMessage(winningCount);
         }
     }
@@ -68,6 +75,9 @@ public class LottoMain {
     public static void printWinningMessage(int winningCount) {
         switch (winningCount) {
             case 3:
+                Rank rank = Rank.valueOf(6, false);
+                rank.printResult(3L);
+
                 System.out.println("3개 맞추셨습니다! 상금 5000원");
                 break;
             case 4:

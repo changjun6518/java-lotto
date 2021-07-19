@@ -6,62 +6,96 @@ public class LottoMain {
     public static int LOTTO_COUNT = 6;
     public static int LOTTO_MAX_NUMBER = 45;
     public static int LOTTO_MIN_NUMBER = 1;
-    public static void main(String[] args) {
+    public static ArrayList<Lotto> lottos = new ArrayList<>();
+    public static ArrayList<Integer> winningNumber = new ArrayList<>();
 
+
+    public static int moneyCharge(Scanner sc) {
         System.out.println("금액을 입력하시오");
+        int money = sc.nextInt();
+        int count = money / LOTTO_PRICE;
+        return count;
+    }
 
-        Scanner sc = new Scanner(System.in);
+    public static ArrayList<Integer> lottoNumberGenerate() {
+        HashSet<Integer> lottoNumber = new HashSet<>();
 
-        int input = sc.nextInt();
-        int count = input / LOTTO_PRICE;
-
-        ArrayList<Lotto> lottos = new ArrayList<>();
-
-        for (int i = 0; i < count; i++) {
-            HashSet<Integer> lottoNumber = new HashSet<>();
-
-            while (lottoNumber.size() != LOTTO_COUNT) {
-                int randomNum = ThreadLocalRandom.current().nextInt(LOTTO_MIN_NUMBER, LOTTO_MAX_NUMBER) + LOTTO_MIN_NUMBER;
-                lottoNumber.add(randomNum);
-            }
-
-            ArrayList<Integer> lotto = new ArrayList<>(lottoNumber);
-            Collections.sort(lotto);
-            lottos.add(new Lotto(lotto));
+        while (lottoNumber.size() != LOTTO_COUNT) {
+            int randomNum = ThreadLocalRandom.current().nextInt(LOTTO_MIN_NUMBER, LOTTO_MAX_NUMBER) + LOTTO_MIN_NUMBER;
+            lottoNumber.add(randomNum);
         }
 
+        ArrayList<Integer> lotto = new ArrayList<>(lottoNumber);
+        Collections.sort(lotto);
+        return lotto;
+    }
 
+    public static void lottoGenerateByMoney(int count) {
+        for (int i = 0; i < count; i++) {
+            ArrayList<Integer> lotto = lottoNumberGenerate();
+            lottos.add(new Lotto(lotto));
+        }
+    }
+
+    public static void showLottoNumbers() {
         for (Lotto lotto : lottos) {
             System.out.printf("lotto : " + lotto.numbers + "\n");
         }
+    }
 
-
+    public static void inputWinningNumber(Scanner sc) {
         System.out.println("당첨 번호를 입력해 주세요! (띄어쓰기로 구분해주세요)");
-
-        ArrayList<Integer> winningNumber = new ArrayList<>();
         for (int i = 0; i < LOTTO_COUNT; i++) {
             winningNumber.add(sc.nextInt());
         }
         System.out.println("보너스 볼을 입력해 주세요!");
         winningNumber.add(sc.nextInt());
+    }
 
-
+    public static void checkWinning() {
         for (Lotto lotto : lottos) {
-            int temp = 0;
+            int winningCount = 0;
             List<Integer> numbers = lotto.numbers;
             for (Integer number : numbers) {
                 if (winningNumber.contains(number)) {
-                    temp++;
+                    winningCount++;
                 }
             }
-            checkWinning(temp);
+            printWinningMessage(winningCount);
         }
-
     }
 
-    public static void checkWinning(int winningCount) {
-        if (winningCount > 3) {
-            System.out.println("당첨!");
-        }else System.out.println("꽝!");
+    public static void printWinningMessage(int winningCount) {
+        switch (winningCount) {
+            case 3:
+                System.out.println("3개 맞추셨습니다! 상금 5000원");
+                break;
+            case 4:
+                System.out.println("4개 맞추셨습니다! 상금 5만원");
+                break;
+            case 5:
+                System.out.println("5개 맞추셨습니다! 상금 500만원");
+                break;
+            case 6:
+                System.out.println("6개 맞추셨습니다! 상금 5억!!!!");
+                break;
+            default:
+                System.out.println("꽝! 아쉽지만 다음 기회에");
+        }
     }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int count = moneyCharge(sc);
+
+        lottoGenerateByMoney(count);
+
+        showLottoNumbers();
+
+        inputWinningNumber(sc);
+
+        checkWinning();
+    }
+
 }

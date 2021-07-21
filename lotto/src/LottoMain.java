@@ -12,13 +12,16 @@ public class LottoMain {
     public static int LOTTO_MIN_NUMBER = 1;
     public static ArrayList<Lotto> lottos = new ArrayList<>();
     public static WinningLotto winningLotto;
+    public static int userMoney;
+    public static int totalWinningMoney = 0;
+
+
 
 
     public static int moneyCharge(Scanner sc) {
         System.out.println("금액을 입력하시오");
-        int money = sc.nextInt();
-        int count = money / LOTTO_PRICE;
-        return count;
+        userMoney = sc.nextInt();
+        return userMoney / LOTTO_PRICE;
     }
 
     public static ArrayList<Integer> lottoNumberGenerate() {
@@ -63,12 +66,17 @@ public class LottoMain {
     public static void checkWinning() {
         for (Lotto lotto : lottos) {
             Rank calculatedRank = winningLotto.calculate(lotto);
+            totalWinningMoney += calculatedRank.getWinningPrice();
             printWinningMessage(calculatedRank);
         }
     }
 
     public static void printWinningMessage(Rank calculatedRank) {
         calculatedRank.printResult();
+    }
+
+    public static void printYield() {
+        System.out.println("총 수익률은 " + totalWinningMoney / userMoney * 100 + " % 입니다");
     }
 
     public static void startGame() {
@@ -83,6 +91,8 @@ public class LottoMain {
         inputWinningNumber(sc);
 
         checkWinning();
+
+        printYield();
     }
 
 }

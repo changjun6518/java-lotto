@@ -13,10 +13,15 @@ public enum Rank {
     private String rankName;
     private static final int WINNING_MIN_COUNT = 3;
 
+
     private Rank(int matchCount, int winningPrice, String rankName) {
         this.matchCount = matchCount;
         this.winningPrice = winningPrice;
         this.rankName = rankName;
+    }
+
+    public int getWinningPrice() {
+        return this.winningPrice;
     }
 
     public static Rank valueOf(int matchCount, boolean matchBonus) {

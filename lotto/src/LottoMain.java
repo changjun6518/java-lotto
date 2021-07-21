@@ -57,14 +57,24 @@ public class LottoMain {
 
     public static void inputWinningNumber(Scanner sc) {
         ArrayList<Integer> winningNumber = new ArrayList<>();
-
+        int bonusNum = 0;
         System.out.println("당첨 번호를 입력해 주세요! (띄어쓰기로 구분해주세요)");
-        for (int i = 0; i < LOTTO_COUNT; i++) {
-            winningNumber.add(sc.nextInt());
+        while (winningNumber.size() != LOTTO_COUNT) {
+            int lottoNumber = sc.nextInt();
+            if (!Validator.checkWinningNumber(winningNumber, lottoNumber)) {
+                continue;
+            }
+            winningNumber.add(lottoNumber);
         }
-        System.out.println("보너스 볼을 입력해 주세요!");
-        int bonusNum = sc.nextInt();
-        winningLotto = new WinningLotto(new Lotto(winningNumber), bonusNum);
+        boolean check = true;
+        while (check) {
+            System.out.println("보너스 볼을 입력해 주세요!");
+            bonusNum = sc.nextInt();
+            check = !Validator.checkWinningNumber(winningNumber, bonusNum);
+        }
+
+        ArrayList<Integer> winning = new ArrayList<>(winningNumber);
+        winningLotto = new WinningLotto(new Lotto(winning), bonusNum);
     }
 
 

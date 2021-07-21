@@ -7,7 +7,7 @@ public class LottoMain {
     public static int LOTTO_MAX_NUMBER = 45;
     public static int LOTTO_MIN_NUMBER = 1;
     public static ArrayList<Lotto> lottos = new ArrayList<>();
-    public static ArrayList<Integer> winningNumber = new ArrayList<>();
+    public static WinningLotto winningLotto;
 
 
     public static int moneyCharge(Scanner sc) {
@@ -44,54 +44,27 @@ public class LottoMain {
     }
 
     public static void inputWinningNumber(Scanner sc) {
+        ArrayList<Integer> winningNumber = new ArrayList<>();
+
         System.out.println("당첨 번호를 입력해 주세요! (띄어쓰기로 구분해주세요)");
         for (int i = 0; i < LOTTO_COUNT; i++) {
             winningNumber.add(sc.nextInt());
         }
         System.out.println("보너스 볼을 입력해 주세요!");
         int bonusNum = sc.nextInt();
+        winningLotto = new WinningLotto(new Lotto(winningNumber), bonusNum);
     }
 
-    public static boolean inputBonousNumber(int bonusNum, Lotto lotto) {
-        if (lotto.numbers.contains(bonusNum)) {
-            return true;
-        } else return false;
-    }
 
     public static void checkWinning() {
         for (Lotto lotto : lottos) {
-            int winningCount = 0;
-            List<Integer> numbers = lotto.numbers;
-            for (Integer number : numbers) {
-                if (winningNumber.contains(number)) {
-                    winningCount++;
-                }
-            }
-
-            printWinningMessage(winningCount);
+            Rank calculatedRank = winningLotto.calculate(lotto);
+            printWinningMessage(calculatedRank);
         }
     }
 
-    public static void printWinningMessage(int winningCount) {
-        switch (winningCount) {
-            case 3:
-                Rank rank = Rank.valueOf(6, false);
-                rank.printResult(3L);
-
-                System.out.println("3개 맞추셨습니다! 상금 5000원");
-                break;
-            case 4:
-                System.out.println("4개 맞추셨습니다! 상금 5만원");
-                break;
-            case 5:
-                System.out.println("5개 맞추셨습니다! 상금 500만원");
-                break;
-            case 6:
-                System.out.println("6개 맞추셨습니다! 상금 5억!!!!");
-                break;
-            default:
-                System.out.println("꽝! 아쉽지만 다음 기회에");
-        }
+    public static void printWinningMessage(Rank calculatedRank) {
+        calculatedRank.printResult();
     }
 
     public static void main(String[] args) {

@@ -1,3 +1,5 @@
+package domain;
+
 public enum Rank {
     FIRST(6, 2_000_000_000, "1등"), // 1등
     SECOND(5, 30_000_000, "2등"), // 2등

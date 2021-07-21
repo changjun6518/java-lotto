@@ -1,3 +1,7 @@
+import domain.Lotto;
+import domain.Rank;
+import domain.WinningLotto;
+
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -67,7 +71,7 @@ public class LottoMain {
         calculatedRank.printResult();
     }
 
-    public static void main(String[] args) {
+    public static void startGame() {
         Scanner sc = new Scanner(System.in);
 
         int count = moneyCharge(sc);

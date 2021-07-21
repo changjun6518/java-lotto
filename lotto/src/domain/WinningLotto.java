@@ -1,4 +1,6 @@
-import java.util.ArrayList;
+package domain;
+
+import domain.Lotto;
 
 public class WinningLotto {
     private final Lotto winninglotto;

@@ -1,6 +1,7 @@
 import domain.Lotto;
 import domain.Rank;
 import domain.WinningLotto;
+import util.Validator;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -19,8 +20,12 @@ public class LottoMain {
 
 
     public static int moneyCharge(Scanner sc) {
-        System.out.println("금액을 입력하시오");
-        userMoney = sc.nextInt();
+        boolean check = true;
+        while (check) {
+            System.out.println("금액을 입력하시오");
+            userMoney = sc.nextInt();
+            check = !Validator.checkMoneyVaild(userMoney);
+        }
         return userMoney / LOTTO_PRICE;
     }
 
